@@ -11,7 +11,7 @@
 </head>
 <body>
      <header>
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
          <div class="container">
           <a class="navbar-brand" href="{% url 'home' %}">
               <img src="{% static 'images/mim-logo.png' %}" width="30px" alt="مدونة">
@@ -60,18 +60,94 @@
           </div>
         </nav>
        </header>
-     <div class="container">
-     <div class="row">
-      <div class="col-sm-8">
-        {% block main %}
-        {% endblock main %}
-      </div>
-    <div class="col-sm-3">
-        {% block sidebar %}
-        {% endblock sidebar %}
-    </div>
-    </div>
-     </div>
+     <section>
+             <div class="container">
+                 <div class="row mt-4">
+                      <div class="col-md-8">
+                        {% block main %}
+                            {% include 'blog/home_post_list.html' %}
+                        {% endblock main %}
+                      </div>
+                     <div class="col-md-4">
+                        <div class="card mb-3">
+                            <h3 class="text-center bg-secondary text-light p-2">احدث التدوينات</h3>
+                            <ul class="list-group-flush latest-post">
+                                {% for post in post_list %}
+                                    <li class="list-group-item latest-post-item">
+                                        <a class="text-dark" href="{% url 'blog:post_detail' pk=post.id %}">
+                                            {{ post.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                         <div class="card mb-3">
+                            <h3 class="text-center bg-secondary text-light p-2">احدث التعليقات</h3>
+                             <ul class="list-group-flush latest-comment">
+                                {% for comment in comments %}
+                                    {% if comment.active == True %}
+                                    <li class="list-group-item latest-comment-item">
+                                        <a class="text-dark" href="{% url 'blog:post_detail' comment.post_id %}">
+                                            {{ comment.body| truncatechars:30 }}
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                   {% empty %}
+                                    <li class="list-group-item latest-comment-item">
+                                        لا توجد تعليقات
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+             </div>
+     </section>
+     <footer class="bg-secondary">
+         <div class="container">
+             <div class="row">
+                 <div class="col-md">
+                     <div class="card-group mt-3">
+                         <div class="card m-3">
+                             <h4 class="card-title text-center border-bottom p-2 m-3">من انا </h4>
+                             <div class="card-body">
+                                 <div class="text-center">
+                                 <img src="{% static 'images/mim-logo.png' %}" width="100px" alt="شعار المدونة">
+                                 </div>
+                                 انشاء مدونة تعليمية
+                             </div>
+                         </div>
+                         <div class="card m-3">
+                             <h4 class="card-title text-center border-bottom p-2 m-3">مواقع هامة </h4>
+                             <div class="card-body">
+                                 <ul>
+                                    <li><a href="">site 1</a></li>
+                                     <li><a href="">site 2</a></li>
+                                     <li><a href="">site 3</a></li>
+                                     <li><a href="">site 4</a></li>
+                                 </ul>
+                             </div>
+                         </div>
+                         <div class="card m-3">
+                             <h4 class="card-title text-center border-bottom p-2 m-3">وسائل التواصل الاجتماعي </h4>
+                             <h4 class="card-body text-center">
+                                 <a href="#" class="text-secondary"><i class="fab fa-facebook"></i></a>
+                                 <a href="#" class="text-secondary"><i class="fab fa-twitter"></i></a>
+                                 <a href="#" class="text-secondary"><i class="fab fa-linkedin-in"></i></a>
+                                 <a href="#" class="text-secondary"><i class="fab fa-instagram"></i></a>
+                                 <a href="#" class="text-secondary"><i class="fab fa-youtube"></i></a>
+                             </h4>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="row p-2">
+                 <div class="col-md text-center">
+                 <small class="text-light">&copy; جميع الحقوق محغوظة</small>
+                 </div>
+             </div>
+         </div>
+     </footer>
         <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
